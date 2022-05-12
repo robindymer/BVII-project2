@@ -1,6 +1,6 @@
 
-x = zeros(10e5, 9);
-t = zeros(10e5, 1);
+x = zeros(10e7, 9);
+t = zeros(10e7, 1);
 j = 1;
 x(j,:) = [0 0 1 0 1 0 0 0 0]; % initial concentration
 t(j) = 0;
@@ -21,7 +21,7 @@ gamma_C = 2;
 delta_M_R = 0.5;
 delta_M_A = 10; 
 delta_A = 1;
-delta_R = 0.2; % This should be tested for 0.08 aswell
+delta_R = 0.08; % This should be tested for 0.08 aswell
 
 while t(j,1) < Tf
     w = prop_vilar(x(j,:), [alfa_A, alfaP_A, alfa_R, alfaP_R, beta_A, beta_R, teta_A, teta_R, gamma_A, gamma_R, gamma_C, delta_M_R, delta_M_A, delta_A, delta_R]);
@@ -49,6 +49,10 @@ x_clean = x(1:j,1);
 % Represant protein R
 x2_clean = x(1:j,9);
 hold on
-plot(t_clean, x_clean, 'bo');
-plot(t_clean, x2_clean, 'ro');
+title("Gillespie's algorithm, dR = 0.08")
+ylabel("Concentration")
+xlabel("Time")
+plot(t_clean, x_clean, 'b-');
+plot(t_clean, x2_clean, 'r-');
+legend('Activator A', 'Repressor R')
 hold off
