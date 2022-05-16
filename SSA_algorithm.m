@@ -6,25 +6,15 @@ x(j,:) = [0 0 1 0 1 0 0 0 0]; % initial concentration
 t(j) = 0;
 Tf = 100; % final time
 
-% parameters
-alfa_A = 50;
-alfaP_A = 500; % P for prime
-alfa_R = 0.01; 
-alfaP_R = 50; % P for prime
-beta_A = 50;
-beta_R = 5;
-teta_A = 50;
-teta_R = 100;
-gamma_A = 1;
-gamma_R = 1;
-gamma_C = 2;
-delta_M_R = 0.5;
-delta_M_A = 10; 
-delta_A = 1;
-delta_R = 0.08; % This should be tested for 0.08 aswell
+% Parameter that is subject to change (is tested for 0.2 and 0.08)
+delta_R = 0.08;
+% Parameters for the system in the following order:
+%   alfa_A  alfa'_A  alfa_R  alfa'_R  beta_A  beta_R  teta_A  teta_R ...
+%   gamma_A  gamma_R  gamma_C  delta_M_R  delta_M_A  delta_A  delta_R
+params = [50, 500, 0.01, 50, 50, 5, 50, 100, 1, 1, 2, 0.5, 10, 1, delta_R];
 
 while t(j,1) < Tf
-    w = prop_vilar(x(j,:), [alfa_A, alfaP_A, alfa_R, alfaP_R, beta_A, beta_R, teta_A, teta_R, gamma_A, gamma_R, gamma_C, delta_M_R, delta_M_A, delta_A, delta_R]);
+    w = prop_vilar(x(j,:), params);
     a0 = sum(w);
     % Generate tau
     u = rand(1);
@@ -41,7 +31,7 @@ while t(j,1) < Tf
     x(j,:) = x(j-1,:) + nr(r,:);
     t(j) = t(j-1) + tau;
 end
-% Since we (possibly) have a bunch of zeros at the tail,
+% Since we (possibly) have a tail of zeros,
 % cleanse the matrices
 t_clean = t(1:j);
 % Activator protein A
